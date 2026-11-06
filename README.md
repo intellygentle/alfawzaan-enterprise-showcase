@@ -22,6 +22,22 @@ The storefront needs no customer account. Shoppers browse real stock from both b
 - **Ambassador portal** where campaign partners can see the orders and revenue attributed to their QR code.
 - **PDF receipts and reports** generated from real order and stock data.
 
+## Screenshots
+
+The storefront reads live stock from both boutiques:
+
+![Storefront marketplace with live Unilorin and Tanke availability, scent search and filters](public/screenshots/storefront.jpg)
+
+The admin Sales Pulse turns aged stock into a content plan, with ABC value bands and locally fitted stock clusters:
+
+![Sales Pulse overview showing aged stock value, value bands and stock pattern clusters](public/screenshots/admin-sales-pulse.jpg)
+
+Every category has its own day-scoped PNG, and the whole week exports as a PDF brief:
+
+![Weekly content handoff with daily post counts, coverage weeks and per-category PNG downloads](public/screenshots/admin-weekly-plan.jpg)
+
+The admin screenshots use the fixture data the browser tests run against, so no real customer records appear.
+
 ## Unique Features
 
 ### Live stock from two real boutiques
