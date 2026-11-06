@@ -6,6 +6,70 @@ The storefront needs no customer account. Shoppers browse real stock from both b
 
 > **Portfolio copy.** This public version is the application source only. Production credentials, infrastructure identifiers, operational runbooks, database migrations, seed data and deployment configuration are intentionally omitted. The app is not runnable without a Supabase schema that matches the wired actions.
 
+## Project Summary
+
+A two-boutique fragrance retailer runs its whole online operation on this app: a public storefront with live stock from both shops, a WhatsApp handoff instead of a payment gateway, and an operations dashboard where staff verify transfers, reconcile shelf counts, issue receipts and gift codes, track ambassador sales, and build social content plans from slow-moving stock.
+
+The interesting problem is trust without customer accounts. Shoppers never sign in, so every price and stock figure in the browser is treated as a hint: checkout reloads canonical prices, validates availability server-side, and creates the order atomically against the correct boutique. Staff access is gated by a signed session behind a secret URL path, and the data is split across four Postgres projects — catalogue, two outlet inventories, and the order archive — so one shop's activity cannot quietly corrupt another's.
+
+## Architecture
+
+```mermaid
+flowchart LR
+  subgraph clients["Clients"]
+    shopper["Shopper<br/>storefront and cart"]
+    admin["Admin hub"]
+    rep["Outlet representative"]
+    ambassador["Ambassador QR link"]
+  end
+
+  gate["proxy.ts<br/>bot filter, secret-path rewrite,<br/>signed session gate"]
+
+  subgraph nextapp["Next.js 16"]
+    store["/store and /delivery<br/>cached storefront pages"]
+    dashboard["/admin/dashboard<br/>client UI and server actions"]
+    represent["/representative<br/>outlet-scoped portal"]
+    portal["/ambassador/[code]"]
+    api["Route handlers<br/>search, Sales Pulse, sessions"]
+    exports["On-device exports<br/>jsPDF and Canvas PNG"]
+  end
+
+  subgraph data["Supabase Postgres, four projects"]
+    master[("Master catalogue<br/>products, prices, ambassadors")]
+    unilorin[("Unilorin inventory<br/>stock, reservations")]
+    tanke[("Tanke inventory<br/>stock, reservations")]
+    archive[("Archive<br/>orders, ledger, gift codes")]
+  end
+
+  whatsapp["WhatsApp<br/>order handoff"]
+
+  shopper --> gate --> store
+  admin --> gate --> dashboard
+  rep --> gate --> represent
+  ambassador --> store
+
+  store --> api
+  store --> unilorin
+  store --> tanke
+  api --> master
+  dashboard --> api
+  dashboard --> master
+  dashboard --> unilorin
+  dashboard --> tanke
+  dashboard --> archive
+  represent --> unilorin
+  represent --> tanke
+  represent --> archive
+  portal --> master
+  dashboard --> exports
+  store -. prepared order .-> whatsapp
+```
+
+- **Request path:** `proxy.ts` filters scrapers that would burn cache regeneration, rewrites the secret admin and representative paths, and verifies the signed session cookie before either dashboard is served.
+- **Data access:** browser code only ever receives anon keys fetched at runtime; every privileged read and write crosses a server action or route handler that holds service-role clients, one per project.
+- **Writes:** checkout re-prices and revalidates stock server-side, then an atomic database function creates the order and its items; outlet reservations are the last line against overselling.
+- **Exports:** receipts, discrepancy reports, briefs and content sheets are rendered on the device from data already loaded, so generating them costs no server round trip.
+
 ## Tech Stack
 
 - **Next.js 16** App Router, **React 19**, TypeScript (strict)
