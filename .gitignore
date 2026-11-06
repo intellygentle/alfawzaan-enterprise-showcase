@@ -1,0 +1,95 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+/micro1
+
+
+# testing
+/coverage
+/test-results
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# credentials / local tooling config
+.npmrc
+*.key
+*.p12
+*.pfx
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (never commit real values)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# data files (Excel, CSV) - not needed for deployment
+*.xlsx
+*.csv
+
+# documentation & notes
+Database SQL.md
+*.md
+!README.md
+
+# generated / repomix
+repomix-output.xml
+
+# utility scripts (not part of the web app)
+update_inventory.py
+
+# codebuff config
+.openclaude/
+
+# agent / codebuff config files (not needed for deployment)
+AGENTS.md
+CLAUDE.md
+.freebuff/
+
+# dev-only files
+
+# Keep the versioned database migrations and the runnable verification/test
+# scripts in the repo. Local data dumps, previews, backups, docs, and legacy
+# junk stay out.
+/devtools/*
+!/devtools/migrations/
+!/devtools/scripts/
+
+# local database backups
+/.supabase-backups/
+
+# agent/session artifacts (logs, lint dumps, temp diagnostics)
+opencode-*.log
+opencode-*.txt
+opencode-tmp-*.mjs
+lint-output.txt
+eslint-report.json
+
+# Keep the placeholder template committable
+!.env.example

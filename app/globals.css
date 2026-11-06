@@ -1,0 +1,304 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: light --default
+}
+
+@theme {
+  --color-brand-gold: #D4AF37;
+  --color-brand-goldLight: #F5E6AD;
+  --color-brand-cream: #FAF6F0;
+  --color-brand-warmBlack: #1A1A1A;
+  --color-brand-taupe: #8B7355;
+  --color-brand-white: #FFFFFF;
+  --color-brand-softGray: #F9F9F9;
+
+  /* Material Design 3 color tokens */
+  --color-primary: #735c00;
+  --color-primary-container: #d4af37;
+  --color-on-primary: #ffffff;
+  --color-on-primary-fixed: #241a00;
+  --color-on-primary-container: #554300;
+  --color-surface: #fbf9f9;
+  --color-surface-dim: #dbdad9;
+  --color-surface-bright: #fbf9f9;
+  --color-surface-container: #efeded;
+  --color-surface-container-low: #f5f3f3;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-high: #e9e8e7;
+  --color-surface-container-highest: #e3e2e2;
+  --color-surface-variant: #e3e2e2;
+  --color-on-surface: #1b1c1c;
+  --color-on-surface-variant: #4d4635;
+  --color-outline: #7f7663;
+  --color-outline-variant: #d0c5af;
+  --color-inverse-surface: #303031;
+  --color-inverse-on-surface: #f2f0f0;
+  --color-inverse-primary: #e9c349;
+  --color-metallic-gold: #d4af37;
+  --color-cream-ivory: #FDFBF7;
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #93000a;
+
+  /* Typography */
+  --font-family-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-family-serif: var(--font-playfair), ui-serif, Georgia, serif;
+
+  --font-size-display-hero: 4.5rem;
+  --font-size-display-hero-mobile: 3rem;
+  --font-size-display-lg: 3rem;
+  --font-size-display-lg-mobile: 2.25rem;
+  --font-size-headline-lg: 3rem;
+  --font-size-headline-lg-mobile: 2rem;
+  --font-size-headline-md: 2rem;
+  --font-size-headline-sm: 1.5rem;
+  --font-size-body-lead: 1.25rem;
+  --font-size-body-main: 1rem;
+  --font-size-body-md: 1rem;
+  --font-size-body-lg: 1.125rem;
+  --font-size-label-caps: 0.75rem;
+  --font-size-label-md: 0.875rem;
+  --font-size-label-sm: 0.75rem;
+  --font-size-stats-num: 2.5rem;
+
+  --background-image-gold-gradient: linear-gradient(135deg, #D4AF37 0%, #F5E6AD 100%);
+  --background-image-noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --radius: 1rem;
+  }
+}
+
+
+body {
+  color: #121212;
+  min-height: 100vh;
+}
+
+/* Fixed background on body causes severe scroll jank on iOS Safari.
+   Use html instead and use scroll for all devices since fixed backgrounds
+   are problematic across mobile browsers. */
+html {
+  background: linear-gradient(135deg, #FAF5E6 0%, #E8C35E 50%, #D4AF37 100%);
+  background-attachment: scroll;
+  min-height: 100vh;
+  /* Prevent any stray element from creating a horizontal page scroll on any device.
+     Use clip (not hidden) so it never turns the root into a scroll container,
+     which would break position: sticky on the navigation. */
+  overflow-x: clip;
+}
+
+/* ─── Custom Gold Gradients ─── */
+.bg-gold-gradient {
+  background: linear-gradient(135deg, #D4AF37 0%, #F5E6AD 100%);
+}
+
+.text-gold-shadow {
+  text-shadow: 0px 2px 4px rgba(212, 175, 55, 0.3);
+}
+
+/* ─── Noise Texture Overlay ─── */
+.bg-noise {
+  background-image: var(--background-image-noise);
+}
+
+.bg-noise::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--background-image-noise);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Geometric Pattern Overlay ─── */
+.bg-geometric {
+  background-image:
+    linear-gradient(45deg, rgba(212, 175, 55, 0.03) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(212, 175, 55, 0.03) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(212, 175, 55, 0.03) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(212, 175, 55, 0.03) 75%);
+  background-size: 60px 60px;
+  background-position: 0 0, 0 30px, 30px -30px, -30px 0px;
+}
+
+/* ─── Islamic-inspired Geometric Star Pattern ─── */
+.bg-islamic {
+  background-image:
+    radial-gradient(circle at 25% 25%, rgba(212, 175, 55, 0.04) 1px, transparent 1px),
+    radial-gradient(circle at 75% 75%, rgba(212, 175, 55, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Hide scrollbar for category tabs on mobile */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Typewriter cursor blink */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 1s infinite;
+}
+
+/* Gold shimmer effect */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, #D4AF37 0%, #F5E6AD 50%, #D4AF37 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Float animation for particles */
+@keyframes float {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  25% { transform: translateY(-20px) translateX(10px); }
+  50% { transform: translateY(-10px) translateX(-5px); }
+  75% { transform: translateY(-30px) translateX(15px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Pulse glow for gold elements */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.6); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ─── Mesh Gradient Animation ─── */
+@keyframes mesh {
+  0%, 100% { background-position: 0% 50%; }
+  25% { background-position: 100% 0%; }
+  50% { background-position: 100% 100%; }
+  75% { background-position: 0% 100%; }
+}
+
+.animate-mesh {
+  background: radial-gradient(ellipse at 20% 50%, rgba(212, 175, 55, 0.25) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 20%, rgba(245, 230, 173, 0.2) 0%, transparent 50%),
+              radial-gradient(ellipse at 40% 80%, rgba(232, 195, 94, 0.15) 0%, transparent 50%);
+  background-size: 200% 200%;
+  animation: mesh 15s ease-in-out infinite;
+}
+
+/* ─── Reveal Animation ─── */
+@keyframes reveal {
+  0% { clip-path: inset(0 100% 0 0); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+
+.animate-reveal {
+  animation: reveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ─── Scale In ─── */
+@keyframes scale-in {
+  0% { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-scale-in {
+  animation: scale-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ─── Fade In Up for editorial sections ─── */
+@keyframes fade-up {
+  0% { transform: translateY(24px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ─── Smooth scroll ─── */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ─── Respect reduced motion preferences ─── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-mesh,
+  .animate-float,
+  .animate-shimmer,
+  .animate-pulse-glow,
+  .animate-blink {
+    animation: none !important;
+  }
+
+  [style*="--duration"] {
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* ─── Glass Nav ─── */
+.glass-nav {
+  background: rgba(251, 249, 249, 0.8);
+  backdrop-filter: blur(32px);
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
+}
+
+/* ─── Custom Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FAF5E6;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #121212;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2D2D2D;
+}
+
+/* ─── Selection ─── */
+::selection {
+  background-color: rgba(212, 175, 55, 0.3);
+  color: #121212;
+}
+
+/* ─── Focus Ring ─── */
+*:focus-visible {
+  outline: 2px solid #D4AF37;
+  outline-offset: 2px;
+}
